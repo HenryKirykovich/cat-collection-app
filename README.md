@@ -1,5 +1,9 @@
 
 #DEV 272 Expo App
-Scan this QR with Expo Go:
-![QR Code](./assets/qr.png)
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+ Try the app on your phone:
+
+1. Install Expo Go app (iOS or Android)
+2. Scan this QR code:
+ [Expo QR Page](https://expo.dev/accounts/groo21021984/projects/my-app/updates/12adc625-71b8-459f-a68b-4300a9ed363a)
+
+
