@@ -4,7 +4,14 @@ import { ScrollView } from 'react-native'; // #my scroll bar
 import { Linking} from 'react-native'; // open any url
 import { Pressable} from 'react-native'; // create button 
 import { TouchableOpacity } from 'react-native'; // for touching button with effect
+import {TextInput } from 'react-native';
+import {useState} from 'react';
 
+const [data, setData] = useState("");
+
+const handlePress = () => {
+  alert("You submitted: " + data);
+};
 
 export default function HomeScreen() {
   return (
@@ -50,6 +57,14 @@ export default function HomeScreen() {
 
       
       </View>
+
+      {/* <TextInput  */}
+          {/* style={styles.title} */}
+          {/* placeholder="Please put your text" */}
+          {/* value={data} */}
+          {/* onChangeText={setData} */}
+      {/* /> */}
+      <Button title="Submit" onPress={handlePress} />
 
 
     </ScrollView>
