@@ -8,75 +8,62 @@ import {TextInput } from 'react-native';
 import {useState} from 'react';
 
 const [data, setData] = useState("");
-
+const option = ['Catalog of Cat\'s', 'Funny Cat\'s Photo', 'back'];
 const handlePress = () => {
   alert("You submitted: " + data);
 };
 
 export default function HomeScreen() {
   return (
-    // # my scroling wrap all inside
-    <ScrollView contentContainerStyle={styles.container}>
-    
+    // # my scrollview wraped all 
+    <View style={styles.container}>
       <View style={styles.topBar}>
-        <Pressable onPress={() => alert('Sorry, my burger temporarily doesn\'t work')}>
-          <Ionicons name="menu" size={28} color="#333" />
-        </Pressable>
+        <View style={styles.iconContainer}>
+          <Pressable onPress={() => alert('Sorry, my burger temporarily doesn\'t work')}>
+          <Ionicons name="menu" size={28} color="#333"/>
+          </Pressable>
+        </View>
+        <Text style={styles.titleContainer}>Home</Text>
       </View>
 
-     
-      <View style={styles.contentBlock1}>
-        <Text style={styles.title}>#Welcome to my first React Native+Expo App#</Text>
-        <Text style={styles.subtitle}>#DEV272 class#</Text>
-        <Image source={require('../../assets/images/app-developers.png')} style={styles.image}/>
-        {/* just link without any ajustment */}
-        <Text>  </Text>
-        <Button title="About me" onPress={() => Linking.openURL('https://henadzikirykovich.dev/')} /> 
-          
-      </View>
-
+        <Text style={styles.title}>Welcome to my Cat's Collection</Text>
+        <Image source={require('../../assets/images/top_pic.jpg')} style={styles.image}/>
+        <Text style={styles.subtitle}>What do you know about cat's breed?</Text>
+        <TouchableOpacity style={styles.button}>Let's start</TouchableOpacity>        
       
-      <View style={styles.contentBlock2}>
-        <Text style={styles.title}>#Second copy#</Text>
-        <Image source={require('../../assets/images/memory-game.webp')} resizeMode="contain"  style={styles.image}/>
-        
-        <Pressable style={styles.button} onPress={()=> Linking.openURL('https://henrykirykovich.github.io/Memory_Game_on_React/')}>
-          <Text style={{ fontSize: 14, color: '#2A3439' }}>Touch for playing the game</Text>
-        </Pressable>
-
-      </View>
-
-
-      <View style={styles.contentBlock2}>
-      <Text style={styles.title}>#Third copy#</Text>
-      <Image source={require('../../assets/images/forecast.webp')} style={styles.image}  resizeMode="contain" />
-      
-      <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://templix.tech/')}> 
-        <Text style={{fontSize: 14, color: 'black'}}>Want you know forecast?</Text>
-      </TouchableOpacity>
-
-      
-      </View>
-
-      {/* <TextInput  */}
-          {/* style={styles.title} */}
-          {/* placeholder="Please put your text" */}
-          {/* value={data} */}
-          {/* onChangeText={setData} */}
-      {/* /> */}
-      <Button title="Submit" onPress={handlePress} />
-
-
-    </ScrollView>
+    </View>
   );
 }
 
                                                                                   
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
+    flex: 1,
+    
+  },
+  topBar: {
+    flexDirection: "row",
+    alignItems:"center",
+    height: 60,
+    backgroundColor: 'green',
+  },
+
+  iconContainer: {
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    
   },
   button: {
     width: 200, 
@@ -85,41 +72,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',  // horizontaly centered
     justifyContent: 'center',  // verticaly centered
-
     padding: 10,
     marginTop: 20,
   },
-  topBar: {
-   
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  contentBlock1: {
-    paddingTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 40,
-  },
-  contentBlock2 : {
-    
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 40,
-    paddingBottom: 50,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
+  
   subtitle: {
     fontSize: 16,
     color: '#555',
     marginTop: 20,
   },
   image: {
-    width: 250,
+    width: '100%',
     height: 250,
     borderRadius: 200,
     borderWidth: 1,
