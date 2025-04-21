@@ -1,12 +1,16 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "Cat's collection",  // changed name 
+    "slug": "cats-collection",   // changed slug
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/cat_images/collection.jpg",  // default splash before start all rout 
+      "resizeMode": "contain",
+      "backgroundColor": "#222"
+    },
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
@@ -15,17 +19,14 @@
       }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.anonymous.myapp",
       "runtimeVersion": "1.0.0"
     },
     "web": {
+     
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png"   // add my Cat's favicon
     },
     "plugins": [
       "expo-router",
