@@ -1,159 +1,110 @@
-import { Image, View, Text, StyleSheet, Button } from 'react-native'; //  #Pressable is a built-in React Native component used to detect touches (press events).
-import { Ionicons } from '@expo/vector-icons'; // #my hamburger menu icons
-import { ScrollView } from 'react-native'; // #my scroll bar
-import { Linking} from 'react-native'; // open any url
-import { Pressable} from 'react-native'; // create button 
-import { TouchableOpacity } from 'react-native'; // for touching button with effect
-import {TextInput } from 'react-native';
-import {useState} from 'react';
+// HomeScreen.js or HomeScreen.tsx
 
-const [data, setData] = useState("");
-const option = ['Catalog of Cat\'s', 'Funny Cat\'s Photo', 'back'];
-const handlePress = () => {
-  alert("You submitted: " + data);
-};
+import React from 'react';
+import { View, Text, StyleSheet, Pressable, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
   return (
-    // # my scrollview wraped all 
     <View style={styles.container}>
+      
+      {/* Top Bar */}
       <View style={styles.topBar}>
-        <View style={styles.iconContainer}>
-          <Pressable onPress={() => alert('Sorry, my burger temporarily doesn\'t work')}>
-          <Ionicons name="menu" size={28} color="#333"/>
-          </Pressable>
-        </View>
-        <Text style={styles.titleContainer}>Home</Text>
+        <Pressable style={styles.menuIcon} onPress={() => alert('Burger menu doesn’t work')}>
+          <Ionicons name="menu" size={28} color="#333" />
+        </Pressable>
+
+        <Text style={styles.title}>Home</Text>
       </View>
 
-        <Text style={styles.title}>Welcome to my Cat's Collection</Text>
-        <Image source={require('../../assets/images/top_pic.jpg')} style={styles.image}/>
+      {/* Scrollable content */}
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.header}>Welcome to my Cat's Collection</Text>
+
+        <Image
+          source={require('../../assets/images/top_pic.jpg')}
+          style={styles.image}
+        />
+
         <Text style={styles.subtitle}>What do you know about cat's breed?</Text>
-        <TouchableOpacity style={styles.button}>Let's start</TouchableOpacity>        
-      
+
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Let's start</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
     </View>
   );
 }
 
-                                                                                  
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
-  },
-  topBar: {
-    flexDirection: "row",
-    alignItems:"center",
-    height: 60,
-    backgroundColor: 'green',
+    backgroundColor: '#f2f2f2',
   },
 
-  iconContainer: {
-    width: 50,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+  topBar: {
+    height: 60,
+    backgroundColor: '#9ebed9',
+    justifyContent: 'center',     // center the title vertically
+    alignItems: 'center',         // center the title horizontally
+    position: 'relative',         // needed for absolute icon
   },
-  titleContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: 24,
-    fontWeight: 'bold',
+
+  menuIcon: {
+    position: 'absolute',
+    left: 16,
+    top: 16,
   },
+
   title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+
+  content: {
+    padding: 20,
+    alignItems: 'center',
+  },
+
+  header: {
     fontSize: 24,
     fontWeight: 'bold',
-    
+    marginTop: 20,
+    textAlign: 'center',
   },
-  button: {
-    width: 200, 
-    height: 50,
-    backgroundColor: '#007AFF',
-    borderRadius: 8,
-    alignItems: 'center',  // horizontaly centered
-    justifyContent: 'center',  // verticaly centered
-    padding: 10,
+
+  image: {
+    width: '100%',
+    height: 250,
+    resizeMode: 'cover',
+    borderRadius: 100,
+    overflow: 'hidden',
     marginTop: 20,
   },
-  
+
   subtitle: {
     fontSize: 16,
     color: '#555',
     marginTop: 20,
+    textAlign: 'center',
   },
-  image: {
-    width: '100%',
-    height: 250,
-    borderRadius: 200,
-    borderWidth: 1,
-    borderColor: '#444',
+
+  button: {
+    width: 200,
+    height: 50,
+    backgroundColor: '#007AFF',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 20,
   },
+
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
