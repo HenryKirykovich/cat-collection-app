@@ -5,9 +5,8 @@ import { View, Text, StyleSheet, Pressable, Image, TouchableOpacity, ScrollView 
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-const HomeScreen = () => {
+const CategoryScreen = () => {
   const choiceButton = ['Look breed', 'Funny cat collection', 'Back to home'];
- 
 
 
   return (
@@ -19,23 +18,24 @@ const HomeScreen = () => {
           <Ionicons name="menu" size={28} color="#333" />
         </Pressable>
 
-        <Text style={styles.title}>Home</Text>
+        <Text style={styles.title}>Category</Text>
       </View>
 
       {/* Scrollable content */}
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.header}>Welcome to my Cat's Collection</Text>
+        
 
         <Image
           source={require('../../assets/images/top_pic.jpg')}
           style={styles.image}
         />
 
-        <Text style={styles.subtitle}>What do you know about cat's breed?</Text>
+        {choiceButton.map(buttonNew => (
+          <TouchableOpacity style={styles.button} key={buttonNew} onPress={()=>{ router.push({pathname : "/category/[category]", params : {category : buttonNew}, })}}>
+            <Text style={styles.buttonText}>{buttonNew}</Text>
+          </TouchableOpacity>
+        ))}
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={() => {router.push("/CategoryScreen")}}>Let's start</Text>
-        </TouchableOpacity>
       </ScrollView>
 
     </View>
@@ -114,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default CategoryScreen;
