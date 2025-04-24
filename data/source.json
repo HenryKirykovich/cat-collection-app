@@ -1,0 +1,43 @@
+[
+    {
+      "title": "Maine Coon",
+      "description": "Large, fluffy, and gentle cat breed, known for its friendly personality.",
+      "origin": "United States"
+    },
+    {
+      "title": "Siamese",
+      "description": "Elegant cat with a short coat and striking blue eyes. Very vocal and affectionate.",
+      "origin": "Thailand"
+    },
+    {
+      "title": "Persian",
+      "description": "Long-haired and quiet breed with a sweet temperament.",
+      "origin": "Iran (Persia)"
+    },
+    {
+      "title": "Bengal",
+      "description": "Energetic and exotic-looking cat breed with leopard-like spots.",
+      "origin": "United States"
+    },
+    {
+      "title": "Sphynx",
+      "description": "Hairless cat known for its warmth and love for attention.",
+      "origin": "Canada"
+    },
+    {
+      "title": "Ragdoll",
+      "description": "Large and calm cat that often goes limp when picked up.",
+      "origin": "United States"
+    },
+    {
+      "title": "British Shorthair",
+      "description": "Stocky build with plush fur and a calm, independent personality.",
+      "origin": "United Kingdom"
+    },
+    {
+      "title": "Russian Blue",
+      "description": "Short-haired breed with silvery-blue coat and green eyes. Known for its gentle nature.",
+      "origin": "Russia"
+    }
+  ]
+  
