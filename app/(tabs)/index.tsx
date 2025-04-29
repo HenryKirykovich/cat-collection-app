@@ -9,12 +9,14 @@ import {
   StyleSheet,
   ImageBackground,
 } from 'react-native';
-import CatCard from '../../components/CatCard';
-import catData from '../../data/source.json';
+import CatCard from '../../components/CatCard';  //  To reuse a UI component that displays each cat (one block/card per cat).
+import catData from '../../data/source.json';   // To load a list of cat data (array of objects) from a local JSON file.
+
+
 
 export default function HomeScreen() {
-  const [search, setSearch] = useState('');
-  const [items] = useState(catData);
+  const [search, setSearch] = useState(''); // state of searching 
+  const [items] = useState(catData);  // save all data in state
 
   const filteredItems = items.filter(item =>
     item.title.toLowerCase().includes(search.toLowerCase())

@@ -8,9 +8,15 @@ import {
 } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
+import {useContext} from 'react';
+import {CatContext} from './context/CatContext'
+
 export default function CatDetails() {
-  const { cat } = useLocalSearchParams();
-  const catData = JSON.parse(cat);
+  // const { cat } = useLocalSearchParams(); // get cat as a string because all URL params are text format
+  // const catData = JSON.parse(cat); // convert the string into a real JavaScript object
+  const {selectedCat} = useContext(CatContext);
+
+  if (!selectedCat) return <Text>No cat selected</Text>
 
   return (
     <ImageBackground
@@ -19,10 +25,10 @@ export default function CatDetails() {
       resizeMode="cover"
     >
       <ScrollView contentContainerStyle={styles.overlay}>
-        <Text style={styles.title}>{catData.title}</Text>
-        <Text style={styles.description}>{catData.description}</Text>
-        {catData.origin && (
-          <Text style={styles.origin}>🌍 Origin: {catData.origin}</Text>
+        <Text style={styles.title}>{selectedCat.title}</Text>     
+        <Text style={styles.description}>{selectedCat.description}</Text>
+        {selectedCat.origin && (
+          <Text style={styles.origin}>🌍 Origin: {selectedCat.origin}</Text>
         )}
       </ScrollView>
     </ImageBackground>

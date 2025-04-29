@@ -1,20 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useContext } from 'react';
+import { CatContext } from '@/app/context/CatContext';
 
 export default function CatCard({ cat }) {
     // It receives cat as a prop (a single item from your FlatList) cat contains fields like title, description, and maybe origin
   const router = useRouter(); 
   // Initializes the router object so we can navigate between screens programmatically with router.push(...).
-
+  const {setSelectedCat} = useContext(CatContext); // Access context
 
 
   return (
     
     <Pressable
       style={styles.card}
-      onPress={() => router.push({ pathname: '/cat-details', params: { cat: JSON.stringify(cat) } })}
-    >
+      onPress={() => {
+        setSelectedCat(cat); // Save cat to context
+        router.push('/cat-details'); // convert data to  JSON object JSON.stringify(object) for cat-details
+      }}
+      >
       <Text style={styles.title}>{cat.title}</Text>
       <Text numberOfLines={2} style={styles.preview}>
         {cat.description}
