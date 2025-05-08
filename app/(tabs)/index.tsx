@@ -15,9 +15,6 @@ import CatCard from '../../components/CatCard';  //  To reuse a UI component tha
 import { useRouter } from 'expo-router';
 
 
-
-
-
 export default function HomeScreen() {
   const [search, setSearch] = useState(''); // state of searching 
   const { cats,selectedCat,setSelectedCat,removeCat } = useContext(CatContext);
@@ -53,8 +50,11 @@ export default function HomeScreen() {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={{ marginBottom: 20 }}>
-              <CatCard cat={item} onPress={() => setSelectedCat(item)} />
-          
+              <CatCard cat={item} onPress={() => {
+                      setSelectedCat(item);                // ✅ Save the cat in context
+                      router.push('/(tabs)/cat-details');  // ✅ Navigate to the detail screen
+              }}
+              />
               {selectedCat?.id === item.id && (
                 <Button
                   title="Delete"

@@ -1,40 +1,62 @@
 // components/CatCard.tsx
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Cat } from './context/CatContext';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
+import { CatContext } from './context/CatContext';
+import { Ionicons } from '@expo/vector-icons';
 
-// Props: a cat object and an optional onPress function
-type Props = {
-  cat: Cat;
-  onPress?: () => void;
-};
+const CatCard = ({ cat, onPress, showActions = false }) => {
+  const { favorites, toggleFavorite } = useContext(CatContext);
+  const isFavorite = favorites.includes(cat.id);
 
-const CatCard = ({ cat, onPress }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.card}>
-        {/* Circular image preview if available */}
-        {cat.image && (
-          <Image
-            source={{ uri: cat.image }}
-            style={styles.thumbnail}
-            resizeMode="cover"
-          />
-        )}
+    <View style={styles.cardWrapper}>
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.card}>
+          {/* Circle image */}
+          {cat.image && (
+            <Image
+              source={{ uri: cat.image }}
+              style={styles.thumbnail}
+              resizeMode="cover"
+            />
+          )}
 
-        {/* Text content for title and optional description */}
-        <View style={styles.textBlock}>
-          <Text style={styles.title}>{cat.title}</Text>
-          {cat.description ? (
-            <Text style={styles.description}>{cat.description}</Text>
-          ) : null}
+          {/* Text */}
+          <View style={styles.textBlock}>
+            <Text style={styles.title}>{cat.title}</Text>
+            {cat.description ? (
+              <Text style={styles.description}>{cat.description}</Text>
+            ) : null}
+          </View>
+
+          {/* Heart icon */}
+          <TouchableOpacity onPress={() => toggleFavorite(cat.id)}>
+            <Ionicons
+              name={isFavorite ? 'heart' : 'heart-outline'}
+              size={24}
+              color={isFavorite ? 'red' : 'gray'}
+              style={styles.heartIcon}
+            />
+          </TouchableOpacity>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+
+      {/* Show buttons only if enabled and item is favorited */}
+      {showActions && isFavorite && (
+        <View style={styles.actions}>
+          <Button title="Delete" color="red" onPress={() => console.log('Delete clicked')} />
+          <View style={{ height: 6 }} />
+          <Button title="Push to Favorite" onPress={() => console.log('Already favorited')} />
+        </View>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  cardWrapper: {
+    marginBottom: 20,
+  },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -47,12 +69,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 3,
     shadowOffset: { width: 0, height: 2 },
-    marginBottom: 10,
   },
   thumbnail: {
     width: 80,
     height: 80,
-    borderRadius: 40, // perfect circle
+    borderRadius: 40,
     marginRight: 12,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -69,6 +90,13 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 14,
     color: '#555',
+  },
+  heartIcon: {
+    marginLeft: 10,
+  },
+  actions: {
+    marginTop: 8,
+    paddingHorizontal: 10,
   },
 });
 

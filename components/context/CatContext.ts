@@ -1,21 +1,11 @@
 // components/context/CatContext.ts
-import { createContext } from 'react';  // Importing createContext from React to create a context for managing cat data. 
-// And the CatContext is used to provide and consume cat data throughout the app.
+import { createContext } from 'react';
 
 export interface Cat {
   id: string;
   title: string;
   description?: string;
-  image?: string;  // this allows saving image URI
-}
-
-export interface CatContextType {
-  cats: Cat[];
-  addCat: (cat: Omit<Cat, 'id'>) => void;
-  removeCat: (id: string) => void;
-  // removeCat: (id: string) => void; //  Function to remove a cat by its ID.
-  selectedCat: Cat | null;
-  setSelectedCat: (cat: Cat | null) => void;
+  image?: string;
 }
 
 export interface CatContextType {
@@ -24,8 +14,9 @@ export interface CatContextType {
   removeCat: (id: string) => void;
   selectedCat: Cat | null;
   setSelectedCat: (cat: Cat | null) => void;
+  favorites: string[];
+  toggleFavorite: (id: string) => void;
 }
-
 
 export const CatContext = createContext<CatContextType>({
   cats: [],
@@ -33,8 +24,6 @@ export const CatContext = createContext<CatContextType>({
   removeCat: () => {},
   selectedCat: null,
   setSelectedCat: () => {},
+  favorites: [],
+  toggleFavorite: () => {},
 });
-//  Creating a context for managing cat data, with default values for the context properties.
-
-
-
