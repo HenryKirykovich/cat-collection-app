@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext  } from 'react';
+import { CatContext } from '../../components/context/CatContext';
 import {
   View,
   Text,
@@ -10,17 +11,24 @@ import {
   ImageBackground,
 } from 'react-native';
 import CatCard from '../../components/CatCard';  //  To reuse a UI component that displays each cat (one block/card per cat).
-import catData from '../../data/source.json';   // To load a list of cat data (array of objects) from a local JSON file.
+//import catData from '../../data/source.json';   // To load a list of cat data (array of objects) from a local JSON file.
+import { useRouter } from 'expo-router';
+
+
 
 
 
 export default function HomeScreen() {
   const [search, setSearch] = useState(''); // state of searching 
-  const [items] = useState(catData);  // save all data in state
+  const { cats,selectedCat,setSelectedCat,removeCat } = useContext(CatContext);
 
-  const filteredItems = items.filter(item =>
+  const router = useRouter();
+  
+   // used filter for typing 
+   const filteredItems = cats.filter(item =>
     item.title.toLowerCase().includes(search.toLowerCase())
   );
+  
 
   return (
     <ImageBackground
@@ -43,8 +51,21 @@ export default function HomeScreen() {
         <FlatList
           data={filteredItems}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => <CatCard cat={item} />}
-          scrollEnabled={false} // Prevent inner scroll inside ScrollView
+          renderItem={({ item }) => (
+            <View style={{ marginBottom: 20 }}>
+              <CatCard cat={item} onPress={() => setSelectedCat(item)} />
+          
+              {selectedCat?.id === item.id && (
+                <Button
+                  title="Delete"
+                  color="red"
+                  onPress={() => removeCat(item.id)}
+                />
+              )}
+            </View>
+          )}
+          
+          
         />
       </ScrollView>
     </ImageBackground>

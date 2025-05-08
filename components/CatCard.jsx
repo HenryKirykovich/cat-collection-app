@@ -1,47 +1,75 @@
+// components/CatCard.tsx
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useContext } from 'react';
-import { CatContext } from '@/app/context/CatContext';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Cat } from './context/CatContext';
 
-export default function CatCard({ cat }) {
-    // It receives cat as a prop (a single item from your FlatList) cat contains fields like title, description, and maybe origin
-  const router = useRouter(); 
-  // Initializes the router object so we can navigate between screens programmatically with router.push(...).
-  const {setSelectedCat} = useContext(CatContext); // Access context
+// Props: a cat object and an optional onPress function
+type Props = {
+  cat: Cat;
+  onPress?: () => void;
+};
 
-
+const CatCard = ({ cat, onPress }: Props) => {
   return (
-    
-    <Pressable
-      style={styles.card}
-      onPress={() => {
-        setSelectedCat(cat); // Save cat to context
-        router.push('/cat-details'); // convert data to  JSON object JSON.stringify(object) for cat-details
-      }}
-      >
-      <Text style={styles.title}>{cat.title}</Text>
-      <Text numberOfLines={2} style={styles.preview}>
-        {cat.description}
-      </Text>
-    </Pressable>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.card}>
+        {/* Circular image preview if available */}
+        {cat.image && (
+          <Image
+            source={{ uri: cat.image }}
+            style={styles.thumbnail}
+            resizeMode="cover"
+          />
+        )}
+
+        {/* Text content for title and optional description */}
+        <View style={styles.textBlock}>
+          <Text style={styles.title}>{cat.title}</Text>
+          {cat.description ? (
+            <Text style={styles.description}>{cat.description}</Text>
+          ) : null}
+        </View>
+      </View>
+    </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#E8F0FF',
-    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 12,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 2 },
     marginBottom: 10,
+  },
+  thumbnail: {
+    width: 80,
+    height: 80,
+    borderRadius: 40, // perfect circle
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#eee',
+  },
+  textBlock: {
+    flex: 1,
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 6,
+    fontWeight: 'bold',
   },
-  preview: {
+  description: {
+    marginTop: 4,
     fontSize: 14,
     color: '#555',
   },
 });
+
+export default CatCard;

@@ -8,7 +8,7 @@ import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; // ✅ IMPORT THIS
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-import { CatProvider } from './context/CatProvider';
+import { CatProvider } from '../components/context/CatProvider';
 
 SplashScreen.preventAutoHideAsync();
 
