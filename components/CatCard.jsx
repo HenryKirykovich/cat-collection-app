@@ -1,18 +1,20 @@
 // components/CatCard.tsx
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
-import { CatContext } from './context/CatContext';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { CatContext } from './context/CatContext';
 
 const CatCard = ({ cat, onPress, showActions = false }) => {
-  const { favorites, toggleFavorite } = useContext(CatContext);
+  const { favorites, toggleFavorite, removeCat, setSelectedCat } = useContext(CatContext);
   const isFavorite = favorites.includes(cat.id);
+  const router = useRouter();
 
   return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity onPress={onPress}>
         <View style={styles.card}>
-          {/* Circle image */}
+          {/* Circle image preview */}
           {cat.image && (
             <Image
               source={{ uri: cat.image }}
@@ -21,7 +23,7 @@ const CatCard = ({ cat, onPress, showActions = false }) => {
             />
           )}
 
-          {/* Text */}
+          {/* Title and description */}
           <View style={styles.textBlock}>
             <Text style={styles.title}>{cat.title}</Text>
             {cat.description ? (
@@ -29,7 +31,7 @@ const CatCard = ({ cat, onPress, showActions = false }) => {
             ) : null}
           </View>
 
-          {/* Heart icon */}
+          {/* Favorite icon */}
           <TouchableOpacity onPress={() => toggleFavorite(cat.id)}>
             <Ionicons
               name={isFavorite ? 'heart' : 'heart-outline'}
@@ -41,12 +43,27 @@ const CatCard = ({ cat, onPress, showActions = false }) => {
         </View>
       </TouchableOpacity>
 
-      {/* Show buttons only if enabled and item is favorited */}
-      {showActions && isFavorite && (
-        <View style={styles.actions}>
-          <Button title="Delete" color="red" onPress={() => console.log('Delete clicked')} />
-          <View style={{ height: 6 }} />
-          <Button title="Push to Favorite" onPress={() => console.log('Already favorited')} />
+      {/* Action buttons: Delete & Edit */}
+      {showActions && (
+        <View style={styles.actionsRow}>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => removeCat(cat.id)}
+          >
+            <Ionicons name="trash-outline" size={20} color="gray" />
+            <Text style={styles.iconText}>Delete</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => {
+              setSelectedCat(cat);
+              router.push('/(tabs)/new-item');
+            }}
+          >
+            <Ionicons name="create-outline" size={20} color="gray" />
+            <Text style={styles.iconText}>Edit</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -94,9 +111,21 @@ const styles = StyleSheet.create({
   heartIcon: {
     marginLeft: 10,
   },
-  actions: {
+  actionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    gap: 24,
     marginTop: 8,
-    paddingHorizontal: 10,
+    marginLeft: 10,
+  },
+  iconButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconText: {
+    marginLeft: 4,
+    fontSize: 14,
+    color: '#555',
   },
 });
 

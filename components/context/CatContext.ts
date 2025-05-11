@@ -12,16 +12,19 @@ export interface CatContextType {
   cats: Cat[];
   addCat: (cat: Omit<Cat, 'id'>) => void;
   removeCat: (id: string) => void;
+  updateCat: (updated: Cat) => void; // Add this line
   selectedCat: Cat | null;
   setSelectedCat: (cat: Cat | null) => void;
   favorites: string[];
   toggleFavorite: (id: string) => void;
+
 }
 
 export const CatContext = createContext<CatContextType>({
   cats: [],
   addCat: () => {},
   removeCat: () => {},
+  updateCat: () => {}, // Add this line
   selectedCat: null,
   setSelectedCat: () => {},
   favorites: [],

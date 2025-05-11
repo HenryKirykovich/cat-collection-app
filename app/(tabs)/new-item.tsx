@@ -16,7 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { CatContext } from '../../components/context/CatContext';
 
 export default function NewItemScreen() {
-  const { addCat } = useContext(CatContext); // Access the addCat function from global context
+  const { addCat, updateCat, selectedCat } = useContext(CatContext); // Access the addCat function from global context
   const router = useRouter(); // Router for navigation
 
   // Local state for form inputs
@@ -32,6 +32,16 @@ export default function NewItemScreen() {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     })();
   }, []);
+
+
+  useEffect(() => {
+  if (selectedCat) {
+    setTitle(selectedCat.title || '');
+    setDescription(selectedCat.description || '');
+    setImage(selectedCat.image || '');
+  }
+}, [selectedCat]);
+
 
   // Form validation logic
   const validateForm = () => {
@@ -86,19 +96,30 @@ export default function NewItemScreen() {
     }
   };
 
-  // Form submission handler
   const handleSubmit = () => {
-    if (!validateForm()) { // If form validation fails
-      Alert.alert('Validation Error', 'Please fix the errors before submitting.');
-      return;
-    }
+  // ✅ Step 1: Validate form
+  if (!validateForm()) return;
 
-    // Add new cat using global context
-    addCat({ title: title.trim(), description: description.trim(), image: image ?? undefined });
-    Alert.alert('Success', 'New cat saved!');
-    router.replace('/'); // Navigate back to Home
-  };
+  // ✅ Step 2: If editing existing cat (update), otherwise add new
+  if (selectedCat) {
+    updateCat({
+      ...selectedCat,
+      title: title.trim(),
+      description: description.trim(),
+      image: image ?? undefined,
+    });
+  } else {
+    addCat({
+      title: title.trim(),
+      description: description.trim(),
+      image: image ?? undefined,
+    });
+  }
 
+  // ✅ Step 3: Show success and navigate back
+  Alert.alert('Success', selectedCat ? 'Cat updated!' : 'New cat saved!');
+  router.replace('/');
+};
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Cat Name *</Text>

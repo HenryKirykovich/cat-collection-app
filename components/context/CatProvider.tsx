@@ -18,6 +18,12 @@ export const CatProvider = ({ children }: CatProviderProps) => {
     );
   }, []);
 
+    const updateCat = (updatedCat: Cat) => {
+    setCats(prev =>
+    prev.map(cat => (cat.id === updatedCat.id ? updatedCat : cat))
+    );
+  };
+
   const addCat = (catData: Omit<Cat, 'id'>) => {
     const newCat: Cat = {
       id: Date.now().toString(),
@@ -37,12 +43,13 @@ export const CatProvider = ({ children }: CatProviderProps) => {
       prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]
     );
   };
-
+  
   return (
     <CatContext.Provider
       value={{
         cats,
         addCat,
+        updateCat, // edit cat
         removeCat,
         selectedCat,
         setSelectedCat,

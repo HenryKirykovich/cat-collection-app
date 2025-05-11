@@ -1,31 +1,25 @@
-import React, { useState, useContext  } from 'react';
-import { CatContext } from '../../components/context/CatContext';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
   TextInput,
   Button,
   FlatList,
-  ScrollView,
   StyleSheet,
   ImageBackground,
 } from 'react-native';
-import CatCard from '../../components/CatCard';  //  To reuse a UI component that displays each cat (one block/card per cat).
-//import catData from '../../data/source.json';   // To load a list of cat data (array of objects) from a local JSON file.
 import { useRouter } from 'expo-router';
-
+import { CatContext } from '../../components/context/CatContext';
+import CatCard from '../../components/CatCard';
 
 export default function HomeScreen() {
-  const [search, setSearch] = useState(''); // state of searching 
-  const { cats,selectedCat,setSelectedCat,removeCat } = useContext(CatContext);
-
+  const [search, setSearch] = useState('');
+  const { cats, selectedCat, setSelectedCat, removeCat } = useContext(CatContext);
   const router = useRouter();
-  
-   // used filter for typing 
-   const filteredItems = cats.filter(item =>
+
+  const filteredItems = cats.filter(item =>
     item.title.toLowerCase().includes(search.toLowerCase())
   );
-  
 
   return (
     <ImageBackground
@@ -33,7 +27,7 @@ export default function HomeScreen() {
       style={styles.background}
       resizeMode="cover"
     >
-      <ScrollView contentContainerStyle={styles.overlay}>
+      <View style={styles.overlay}>
         <Text style={styles.header}>Cat's breed</Text>
 
         <TextInput
@@ -47,27 +41,21 @@ export default function HomeScreen() {
 
         <FlatList
           data={filteredItems}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={{ marginBottom: 20 }}>
-              <CatCard cat={item} onPress={() => {
-                      setSelectedCat(item);                // ✅ Save the cat in context
-                      router.push('/(tabs)/cat-details');  // ✅ Navigate to the detail screen
-              }}
+              <CatCard
+                cat={item}
+                onPress={() => {
+                  setSelectedCat(item);               //Setting my context
+                  router.push('/(tabs)/cat-details'); //setting my Navigate
+                }}
+                showActions={true} //works Only if you want delete/fav buttons here
               />
-              {selectedCat?.id === item.id && (
-                <Button
-                  title="Delete"
-                  color="red"
-                  onPress={() => removeCat(item.id)}
-                />
-              )}
             </View>
           )}
-          
-          
         />
-      </ScrollView>
+      </View>
     </ImageBackground>
   );
 }
@@ -79,11 +67,10 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   overlay: {
-    flexGrow: 1, // Ensures content stretches inside ScrollView
-    backgroundColor: 'rgba(255,255,255,0.85)', // Semi-transparent white overlay
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.85)',
     padding: 20,
-    paddingBottom: 100, // Ensures last item is visible
-    justifyContent: 'flex-start',
+    paddingBottom: 100,
   },
   header: {
     fontSize: 24,
