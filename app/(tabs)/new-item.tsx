@@ -16,16 +16,15 @@ import * as ImagePicker from 'expo-image-picker';
 import { CatContext } from '../../components/context/CatContext';
 
 export default function NewItemScreen() {
-  const { addCat, updateCat, selectedCat } = useContext(CatContext); // Access the addCat function from global context
-  const router = useRouter(); // Router for navigation
+  const { addCat, updateCat, selectedCat, setSelectedCat } = useContext(CatContext);
+  const router = useRouter();
 
-  // Local state for form inputs
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const [errors, setErrors] = useState({ title: '', description: '' });
 
-  // Ask for camera permissions on mount
+  // Request image/camera permissions
   useEffect(() => {
     (async () => {
       await ImagePicker.requestCameraPermissionsAsync();
@@ -33,22 +32,24 @@ export default function NewItemScreen() {
     })();
   }, []);
 
-
+  // Pre-fill form if editing, otherwise clear it
   useEffect(() => {
-  if (selectedCat) {
-    setTitle(selectedCat.title || '');
-    setDescription(selectedCat.description || '');
-    setImage(selectedCat.image || '');
-  }
-}, [selectedCat]);
+    if (selectedCat) {
+      setTitle(selectedCat.title || '');
+      setDescription(selectedCat.description || '');
+      setImage(selectedCat.image || '');
+    } else {
+      setTitle('');
+      setDescription('');
+      setImage(null);
+    }
+  }, [selectedCat]);
 
-
-  // Form validation logic
+  // Validate inputs
   const validateForm = () => {
     const newErrors = { title: '', description: '' };
     let isValid = true;
 
-    // Validate title
     if (!title.trim()) {
       newErrors.title = 'Title is required.';
       isValid = false;
@@ -60,17 +61,15 @@ export default function NewItemScreen() {
       isValid = false;
     }
 
-    // Validate description
     if (!description.trim()) {
       newErrors.description = 'Description is required and must be at least 1 character.';
       isValid = false;
     }
 
-    setErrors(newErrors); // Update errors state
-    return isValid; // Return true if form is valid, false otherwise
+    setErrors(newErrors);
+    return isValid;
   };
 
-  // Pick image from library
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -78,48 +77,44 @@ export default function NewItemScreen() {
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.canceled && result.assets.length > 0) {
-      setImage(result.assets[0].uri); // Save selected image URI
+      setImage(result.assets[0].uri);
     }
   };
 
-  // Take photo using camera
   const takePhoto = async () => {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       quality: 1,
     });
-
     if (!result.canceled && result.assets.length > 0) {
-      setImage(result.assets[0].uri); // Save captured image URI
+      setImage(result.assets[0].uri);
     }
   };
 
   const handleSubmit = () => {
-  // ✅ Step 1: Validate form
-  if (!validateForm()) return;
+    if (!validateForm()) return;
 
-  // ✅ Step 2: If editing existing cat (update), otherwise add new
-  if (selectedCat) {
-    updateCat({
-      ...selectedCat,
-      title: title.trim(),
-      description: description.trim(),
-      image: image ?? undefined,
-    });
-  } else {
-    addCat({
-      title: title.trim(),
-      description: description.trim(),
-      image: image ?? undefined,
-    });
-  }
+    if (selectedCat) {
+      updateCat({
+        ...selectedCat,
+        title: title.trim(),
+        description: description.trim(),
+        image: image ?? undefined,
+      });
+    } else {
+      addCat({
+        title: title.trim(),
+        description: description.trim(),
+        image: image ?? undefined,
+      });
+    }
 
-  // ✅ Step 3: Show success and navigate back
-  Alert.alert('Success', selectedCat ? 'Cat updated!' : 'New cat saved!');
-  router.replace('/');
-};
+    Alert.alert('Success', selectedCat ? 'Cat updated!' : 'New cat saved!');
+    setSelectedCat(null); // Clear after submit
+    router.replace('/');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Cat Name *</Text>
@@ -149,7 +144,6 @@ export default function NewItemScreen() {
       <View style={styles.buttonSpacing}>
         <Button title="Take a Photo" onPress={takePhoto} />
       </View>
-
       <View style={styles.buttonSpacing}>
         <Button title="Pick an Image" onPress={pickImage} />
       </View>
@@ -157,7 +151,10 @@ export default function NewItemScreen() {
       {image && <Image source={{ uri: image }} style={styles.image} />}
 
       <View style={styles.buttonSpacing}>
-        <Button title="Add Cat" onPress={handleSubmit} />
+        <Button
+          title={selectedCat ? 'Update Cat' : 'Add Cat'}
+          onPress={handleSubmit}
+        />
       </View>
     </View>
   );
@@ -178,6 +175,116 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: 200, marginVertical: 10, borderRadius: 8 },
   buttonSpacing: { marginVertical: 6 },
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

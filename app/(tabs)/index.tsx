@@ -12,6 +12,8 @@ import { useRouter } from 'expo-router';
 import { CatContext } from '../../components/context/CatContext';
 import CatCard from '../../components/CatCard';
 
+
+
 export default function HomeScreen() {
   const [search, setSearch] = useState('');
   const { cats, selectedCat, setSelectedCat, removeCat } = useContext(CatContext);
