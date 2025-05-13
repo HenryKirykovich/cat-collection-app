@@ -1,3 +1,5 @@
+// tabs/index
+
 import React, { useState, useContext } from 'react';
 import {
   View,

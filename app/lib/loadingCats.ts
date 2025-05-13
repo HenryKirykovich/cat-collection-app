@@ -1,3 +1,5 @@
+// lib/loadingCats
+
 import { useEffect, useState } from 'react';
 import { supabase } from './supabase';
 import { Cat } from '../../components/context/CatContext';
@@ -8,21 +10,25 @@ export function useLoadingCats() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCats = async () => {
-      const { data, error } = await supabase.from('cats').select('*');
+  const fetchCats = async () => {
+    console.log('📡 Fetching cats from Supabase...');
+    const { data, error } = await supabase.from('cats').select('*');
 
-      if (error) {
-        console.error('Error loading cats:', error);
-      } else {
-        setCats(data as Cat[]);
-        setFavorites(data.filter(c => c.favorite).map(c => c.id));
-      }
+    if (error) {
+      console.error('❌ Error loading cats:', error);
+    } else {
+      console.log('✅ Supabase cats loaded:', data); // ADD THIS
+      setCats(data as Cat[]);
+      setFavorites(data.filter(c => c.favorite).map(c => c.id));
+    }
 
-      setLoading(false);
-    };
+    setLoading(false);
+  };
 
-    fetchCats();
-  }, []);
+  fetchCats();
+}, []);
+
+  
 
   return { cats, favorites, loading };
 }

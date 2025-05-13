@@ -24,7 +24,6 @@ export default function NewItemScreen() {
   const [image, setImage] = useState<string | null>(null);
   const [errors, setErrors] = useState({ title: '', description: '' });
 
-  // Request image/camera permissions
   useEffect(() => {
     (async () => {
       await ImagePicker.requestCameraPermissionsAsync();
@@ -32,7 +31,6 @@ export default function NewItemScreen() {
     })();
   }, []);
 
-  // Pre-fill form if editing, otherwise clear it
   useEffect(() => {
     if (selectedCat) {
       setTitle(selectedCat.title || '');
@@ -45,7 +43,6 @@ export default function NewItemScreen() {
     }
   }, [selectedCat]);
 
-  // Validate inputs
   const validateForm = () => {
     const newErrors = { title: '', description: '' };
     let isValid = true;
@@ -92,26 +89,31 @@ export default function NewItemScreen() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateForm()) return;
 
     if (selectedCat) {
-      updateCat({
+      await updateCat({
         ...selectedCat,
         title: title.trim(),
         description: description.trim(),
         image: image ?? undefined,
       });
     } else {
-      addCat({
+      const result = await addCat({
         title: title.trim(),
         description: description.trim(),
         image: image ?? undefined,
       });
+
+      if (!result) {
+        Alert.alert('Error', 'Failed to save new cat.');
+        return;
+      }
     }
 
     Alert.alert('Success', selectedCat ? 'Cat updated!' : 'New cat saved!');
-    setSelectedCat(null); // Clear after submit
+    setSelectedCat(null);
     router.replace('/');
   };
 
@@ -175,72 +177,6 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: 200, marginVertical: 10, borderRadius: 8 },
   buttonSpacing: { marginVertical: 6 },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
