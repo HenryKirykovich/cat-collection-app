@@ -1,34 +1,29 @@
-// lib/loadingCats
-
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from './supabase';
 import { Cat } from '../../components/context/CatContext';
 
 export function useLoadingCats() {
-  const [cats, setCats] = useState<Cat[]>([]);
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data, error, isLoading } = useQuery<Cat[] | null>({
+    queryKey: ['cats'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('cats').select('*');
 
-  useEffect(() => {
-  const fetchCats = async () => {
-    console.log('📡 Fetching cats from Supabase...');
-    const { data, error } = await supabase.from('cats').select('*');
+      if (error) {
+        console.error('!!!!!!Error loading!!!!!!', error);
+        throw new Error(error.message);
+      }
 
-    if (error) {
-      console.error('❌ Error loading cats:', error);
-    } else {
-      console.log('✅ Supabase cats loaded:', data); // ADD THIS
-      setCats(data as Cat[]);
-      setFavorites(data.filter(c => c.favorite).map(c => c.id));
-    }
+      return data as Cat[];
+    },
+    staleTime: 5 * 60 * 1000 // cashing data for 5 minutes
+  });
 
-    setLoading(false);
+  const cats: Cat[] = data ?? [];
+  const favorites = cats.filter((c) => c.favorite).map((c) => c.id);
+
+  return {
+    cats,
+    favorites,
+    loading: isLoading
   };
-
-  fetchCats();
-}, []);
-
-  
-
-  return { cats, favorites, loading };
 }

@@ -35,30 +35,35 @@ export const CatProvider = ({ children }: CatProviderProps) => {
       setCatsState((prev) => [...prev, data]);
       return data;
     } catch (error) {
-      console.error('❌ Insert failed:', error);
+      console.error('Insert failed:', error);
       return null;
     }
   };
 
   // ✅ Update existing cat in Supabase and state
   const updateCat = async (updatedCat: Cat) => {
-    try {
-      const { error } = await supabase
-        .from('cats')
-        .update(updatedCat)
-        .eq('id', updatedCat.id);
+  try {
+    const { error } = await supabase
+      .from('cats')
+      .update({
+        title: updatedCat.title,
+        description: updatedCat.description,
+        origin: updatedCat.origin,
+        image: updatedCat.image,
+      })
+      .eq('id', updatedCat.id);
 
-      if (error) throw error;
+    if (error) throw error;
 
-      setCatsState((prev) =>
-        prev.map((cat) => (cat.id === updatedCat.id ? updatedCat : cat))
-      );
+    setCatsState((prev) =>
+      prev.map((cat) => (cat.id === updatedCat.id ? updatedCat : cat))
+    );
 
-      console.log('✅ Updated in Supabase:', updatedCat);
-    } catch (error) {
-      console.error('❌ Update failed:', error);
-    }
-  };
+    console.log(' Cat updated in Supabase:', updatedCat);
+  } catch (error) {
+    console.error('Failed to update cat:', error);
+  }
+};
 
   // ✅ Delete cat from Supabase and state
   const removeCat = async (id: string) => {
@@ -76,11 +81,11 @@ export const CatProvider = ({ children }: CatProviderProps) => {
 
       console.log('🗑️ Deleted from Supabase:', id);
     } catch (error) {
-      console.error('❌ Failed to delete from Supabase:', error);
+      console.error('Failed to delete from Supabase:', error);
     }
   };
 
-  // ✅ Toggle favorite status and update Supabase
+  // Toggle favorite status and update Supabase
   const toggleFavorite = async (id: string) => {
     const isNowFavorite = !favorites.includes(id);
     setFavorites((prev) =>
@@ -92,7 +97,7 @@ export const CatProvider = ({ children }: CatProviderProps) => {
       .update({ favorite: isNowFavorite })
       .eq('id', id);
 
-    if (error) console.error('❌ Failed to update favorite:', error);
+    if (error) console.error(' Failed to update favorite:', error);
   };
 
   return (

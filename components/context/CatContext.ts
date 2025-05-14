@@ -23,7 +23,7 @@ export interface CatContextType {
 
 export const CatContext = createContext<CatContextType>({
   cats: [],
-  addCat: async () => null,           // ✅ Dummy async function for default value
+  addCat: async () => null,           // Dummy async function for default value
   removeCat: () => {},
   updateCat: () => {},
   selectedCat: null,

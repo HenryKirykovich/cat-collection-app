@@ -22,6 +22,7 @@
     "@react-navigation/native": "^7.0.14",
     "@supabase/realtime-js": "^2.11.8-next.1",
     "@supabase/supabase-js": "^2.49.5-next.1",
+    "@tanstack/react-query": "^4.29.17",
     "expo": "^53.0.0",
     "expo-blur": "~14.1.4",
     "expo-constants": "~17.1.6",

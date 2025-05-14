@@ -9,11 +9,13 @@
 
 
 // app/(tabs)/new-item.tsx
+
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { CatContext } from '../../components/context/CatContext';
+import { uploadImageAsync } from '../lib/uploadToStorage';
 
 export default function NewItemScreen() {
   const { addCat, updateCat, selectedCat, setSelectedCat } = useContext(CatContext);
@@ -21,8 +23,9 @@ export default function NewItemScreen() {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [origin, setOrigin] = useState('');
   const [image, setImage] = useState<string | null>(null);
-  const [errors, setErrors] = useState({ title: '', description: '' });
+  const [errors, setErrors] = useState({ title: '', description: '', origin: '' });
 
   useEffect(() => {
     (async () => {
@@ -35,16 +38,18 @@ export default function NewItemScreen() {
     if (selectedCat) {
       setTitle(selectedCat.title || '');
       setDescription(selectedCat.description || '');
+      setOrigin(selectedCat.origin || '');
       setImage(selectedCat.image || '');
     } else {
       setTitle('');
       setDescription('');
+      setOrigin('');
       setImage(null);
     }
   }, [selectedCat]);
 
   const validateForm = () => {
-    const newErrors = { title: '', description: '' };
+    const newErrors = { title: '', description: '', origin: '' };
     let isValid = true;
 
     if (!title.trim()) {
@@ -59,7 +64,12 @@ export default function NewItemScreen() {
     }
 
     if (!description.trim()) {
-      newErrors.description = 'Description is required and must be at least 1 character.';
+      newErrors.description = 'Description is required.';
+      isValid = false;
+    }
+
+    if (!origin.trim()) {
+      newErrors.origin = 'Origin is required.';
       isValid = false;
     }
 
@@ -90,31 +100,64 @@ export default function NewItemScreen() {
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) return;
+    console.log('📤 Submitting form...');
+    if (!validateForm()) {
+      console.log('❌ Validation failed');
+      return;
+    }
 
-    if (selectedCat) {
-      await updateCat({
-        ...selectedCat,
-        title: title.trim(),
-        description: description.trim(),
-        image: image ?? undefined,
-      });
-    } else {
-      const result = await addCat({
-        title: title.trim(),
-        description: description.trim(),
-        image: image ?? undefined,
-      });
+    let uploadedImageUrl: string | undefined;
 
-      if (!result) {
-        Alert.alert('Error', 'Failed to save new cat.');
+    if (image) {
+      try {
+        console.log('📷 Uploading image...');
+        const fileName = `cat_${Date.now()}.jpg`;
+        const url = await uploadImageAsync(image, fileName);
+        if (!url) {
+          Alert.alert('Upload failed');
+          return;
+        }
+        uploadedImageUrl = url;
+        console.log('✅ Uploaded image URL:', uploadedImageUrl);
+      } catch (e) {
+        console.error('❌ Upload error:', e);
+        Alert.alert('Upload error', 'Unable to upload image.');
         return;
       }
     }
 
-    Alert.alert('Success', selectedCat ? 'Cat updated!' : 'New cat saved!');
-    setSelectedCat(null);
-    router.replace('/');
+    try {
+      if (selectedCat) {
+        console.log('📝 Updating cat...');
+        await updateCat({
+          ...selectedCat,
+          title: title.trim(),
+          description: description.trim(),
+          origin: origin.trim(),
+          image: uploadedImageUrl ?? selectedCat.image,
+        });
+      } else {
+        console.log('🆕 Adding new cat...');
+        const result = await addCat({
+          title: title.trim(),
+          description: description.trim(),
+          origin: origin.trim(),
+          image: uploadedImageUrl,
+        });
+
+        if (!result) {
+          Alert.alert('Error', 'Failed to save new cat.');
+          return;
+        }
+      }
+
+      Alert.alert('Success', selectedCat ? 'Cat updated!' : 'New cat saved!');
+      setSelectedCat(null);
+      router.replace('/');
+    } catch (e) {
+      console.error('❌ Submit failed:', e);
+      Alert.alert('Error', 'Something went wrong. Try again.');
+    }
   };
 
   return (
@@ -142,6 +185,18 @@ export default function NewItemScreen() {
         placeholder="Describe the cat"
       />
       {errors.description ? <Text style={styles.error}>{errors.description}</Text> : null}
+
+      <Text style={styles.label}>Origin *</Text>
+      <TextInput
+        style={styles.input}
+        value={origin}
+        onChangeText={(text) => {
+          setOrigin(text);
+          setErrors((prev) => ({ ...prev, origin: '' }));
+        }}
+        placeholder="Enter origin (e.g., Thailand)"
+      />
+      {errors.origin ? <Text style={styles.error}>{errors.origin}</Text> : null}
 
       <View style={styles.buttonSpacing}>
         <Button title="Take a Photo" onPress={takePhoto} />
@@ -177,6 +232,38 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: 200, marginVertical: 10, borderRadius: 8 },
   buttonSpacing: { marginVertical: 6 },
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
