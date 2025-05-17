@@ -7,7 +7,6 @@
 // Title: required, minimum 3 characters.
 // Description: optional, but if provided, minimum 1 characters + add picture of the cat.
 
-
 // app/(tabs)/new-item.tsx
 
 import React, { useState, useContext, useEffect } from 'react';
@@ -99,18 +98,17 @@ export default function NewItemScreen() {
     }
   };
 
+  const removeImage = () => {
+    setImage(null);
+  };
+
   const handleSubmit = async () => {
-    console.log('📤 Submitting form...');
-    if (!validateForm()) {
-      console.log('❌ Validation failed');
-      return;
-    }
+    if (!validateForm()) return;
 
     let uploadedImageUrl: string | undefined;
 
     if (image) {
       try {
-        console.log('📷 Uploading image...');
         const fileName = `cat_${Date.now()}.jpg`;
         const url = await uploadImageAsync(image, fileName);
         if (!url) {
@@ -118,7 +116,6 @@ export default function NewItemScreen() {
           return;
         }
         uploadedImageUrl = url;
-        console.log('✅ Uploaded image URL:', uploadedImageUrl);
       } catch (e) {
         console.error('❌ Upload error:', e);
         Alert.alert('Upload error', 'Unable to upload image.');
@@ -128,7 +125,6 @@ export default function NewItemScreen() {
 
     try {
       if (selectedCat) {
-        console.log('📝 Updating cat...');
         await updateCat({
           ...selectedCat,
           title: title.trim(),
@@ -137,7 +133,6 @@ export default function NewItemScreen() {
           image: uploadedImageUrl ?? selectedCat.image,
         });
       } else {
-        console.log('🆕 Adding new cat...');
         const result = await addCat({
           title: title.trim(),
           description: description.trim(),
@@ -205,7 +200,14 @@ export default function NewItemScreen() {
         <Button title="Pick an Image" onPress={pickImage} />
       </View>
 
-      {image && <Image source={{ uri: image }} style={styles.image} />}
+      {image && (
+        <>
+          <Image source={{ uri: image }} style={styles.image} />
+          <View style={styles.buttonSpacing}>
+            <Button title="Remove Image" onPress={removeImage} color="#d9534f" />
+          </View>
+        </>
+      )}
 
       <View style={styles.buttonSpacing}>
         <Button
@@ -232,182 +234,3 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: 200, marginVertical: 10, borderRadius: 8 },
   buttonSpacing: { marginVertical: 6 },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

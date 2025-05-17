@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/(tabs)/cat-details.js"  ]
+, "app/(tabs)/cat-details.js", "components/CatCard.jsx"  ]
 }

@@ -1,207 +1,79 @@
-//CatProvider.tsx
+// Simplified CatProvider.tsx (no React Query)
 import React, { useState, useEffect, ReactNode } from 'react';
 import { CatContext, Cat } from './CatContext';
-import { useLoadingCats } from '../../app/lib/loadingCats';
 import { supabase } from '../../app/lib/supabase';
 
 type CatProviderProps = { children: ReactNode };
 
 export const CatProvider = ({ children }: CatProviderProps) => {
-  const { cats: initialCats, favorites: initialFavorites, loading } = useLoadingCats();
-
-  const [catsState, setCatsState] = useState<Cat[]>([]);
+  const [cats, setCats] = useState<Cat[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [selectedCat, setSelectedCat] = useState<Cat | null>(null);
 
-  // Sync local state when initial data is loaded
   useEffect(() => {
-    if (!loading) {
-      setCatsState(initialCats);
-      setFavorites(initialFavorites);
-    }
-  }, [initialCats, initialFavorites, loading]);
+    loadCats();
+  }, []);
 
-  // ✅ Add new cat to Supabase and local state
-  const addCat = async (catData: Omit<Cat, 'id'>): Promise<Cat | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('cats')
-        .insert(catData)
-        .select()
-        .single(); // 👈 returns the newly created row
-
-      if (error) throw error;
-
-      setCatsState((prev) => [...prev, data]);
-      return data;
-    } catch (error) {
-      console.error('Insert failed:', error);
-      return null;
+  const loadCats = async () => {
+    const { data, error } = await supabase.from('cats').select('*');
+    if (!error && data) {
+      setCats(data);
+      const favIds = data.filter(cat => cat.favorite).map(cat => cat.id);
+      setFavorites(favIds);
     }
   };
 
-  // ✅ Update existing cat in Supabase and state
+  const addCat = async (catData: Omit<Cat, 'id'>): Promise<Cat | null> => {
+    const { data, error } = await supabase.from('cats').insert(catData).select().single();
+    if (!error && data) {
+      setCats(prev => [...prev, data]);
+      return data;
+    }
+    return null;
+  };
+
   const updateCat = async (updatedCat: Cat) => {
-  try {
     const { error } = await supabase
       .from('cats')
-      .update({
-        title: updatedCat.title,
-        description: updatedCat.description,
-        origin: updatedCat.origin,
-        image: updatedCat.image,
-      })
+      .update(updatedCat)
       .eq('id', updatedCat.id);
-
-    if (error) throw error;
-
-    setCatsState((prev) =>
-      prev.map((cat) => (cat.id === updatedCat.id ? updatedCat : cat))
-    );
-
-    console.log(' Cat updated in Supabase:', updatedCat);
-  } catch (error) {
-    console.error('Failed to update cat:', error);
-  }
-};
-
-  // ✅ Delete cat from Supabase and state
-  const removeCat = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('cats')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setCatsState((prev) => prev.filter((cat) => cat.id !== id));
-      setFavorites((prev) => prev.filter((favId) => favId !== id));
-      setSelectedCat(null);
-
-      console.log('🗑️ Deleted from Supabase:', id);
-    } catch (error) {
-      console.error('Failed to delete from Supabase:', error);
+    if (!error) {
+      setCats(prev => prev.map(cat => (cat.id === updatedCat.id ? updatedCat : cat)));
     }
   };
 
-  // Toggle favorite status and update Supabase
+  const removeCat = async (id: string) => {
+    const { error } = await supabase.from('cats').delete().eq('id', id);
+    if (!error) {
+      setCats(prev => prev.filter(cat => cat.id !== id));
+      setFavorites(prev => prev.filter(favId => favId !== id));
+      setSelectedCat(null);
+    }
+  };
+
   const toggleFavorite = async (id: string) => {
     const isNowFavorite = !favorites.includes(id);
-    setFavorites((prev) =>
-      isNowFavorite ? [...prev, id] : prev.filter((favId) => favId !== id)
-    );
-
     const { error } = await supabase
       .from('cats')
       .update({ favorite: isNowFavorite })
       .eq('id', id);
-
-    if (error) console.error(' Failed to update favorite:', error);
+    if (!error) {
+      setFavorites(prev =>
+        isNowFavorite ? [...prev, id] : prev.filter(favId => favId !== id)
+      );
+      setCats(prev =>
+        prev.map(cat =>
+          cat.id === id ? { ...cat, favorite: isNowFavorite } : cat
+        )
+      );
+    }
   };
 
   return (
     <CatContext.Provider
-      value={{
-        cats: catsState,
-        addCat,
-        updateCat,
-        removeCat,
-        selectedCat,
-        setSelectedCat,
-        favorites,
-        toggleFavorite,
-      }}
+      value={{ cats, favorites, selectedCat, setSelectedCat, addCat, updateCat, removeCat, toggleFavorite }}
     >
       {children}
     </CatContext.Provider>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

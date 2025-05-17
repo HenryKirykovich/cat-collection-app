@@ -33,7 +33,7 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}> {/* wrepper Querry */}
+    
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <CatProvider>
             <Stack>
@@ -44,7 +44,7 @@ export default function RootLayout() {
           </CatProvider>
           <StatusBar style="auto" />
         </ThemeProvider>
-      </QueryClientProvider>
+     
     </GestureHandlerRootView>
   );
 }

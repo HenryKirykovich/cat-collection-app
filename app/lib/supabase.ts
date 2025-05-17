@@ -1,4 +1,6 @@
 // libs/supabase.ts
+// start point for connection to SupaBase
+// This file is used to create a Supabase client instance
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://drpxmxxffhdrmpidgkam.supabase.co';

@@ -1,30 +1,33 @@
-import { supabase } from './supabase';
+// components/context/CatContext.ts
+import { createContext } from 'react';
 
-export async function uploadImageAsync(uri: string, filename: string): Promise<string | null> {
-  try {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    const { data, error } = await supabase.storage
-      .from('cat-images') // ✅ Ensure this matches your bucket name
-      .upload(filename, blob, {
-        contentType: blob.type || 'image/jpeg', // ✅ Ensure contentType is set
-        upsert: true,
-      });
-
-    if (error) {
-      console.error('❌ Upload failed:', error.message || error);
-      return null;
-    }
-
-    const publicUrl = supabase.storage
-      .from('cats-images')
-      .getPublicUrl(data.path).data.publicUrl;
-
-    console.log('✅ Upload complete. URL:', publicUrl);
-    return publicUrl;
-  } catch (err) {
-    console.error('❌ Upload exception:', err);
-    return null;
-  }
+export interface Cat {
+  id?: string;
+  title: string;
+  description?: string;
+  image?: string;
+  origin?: string;
+  favorite?: boolean;
 }
+
+export interface CatContextType {
+  cats: Cat[];
+  addCat: (cat: Omit<Cat, 'id'>) => Promise<Cat | null>; // ✅ Now returns a Promise
+  removeCat: (id: string) => void;
+  updateCat: (updated: Cat) => void;
+  selectedCat: Cat | null;
+  setSelectedCat: (cat: Cat | null) => void;
+  favorites: string[];
+  toggleFavorite: (id: string) => void;
+}
+
+export const CatContext = createContext<CatContextType>({
+  cats: [],
+  addCat: async () => null,           // Dummy async function for default value
+  removeCat: () => {},
+  updateCat: () => {},
+  selectedCat: null,
+  setSelectedCat: () => {},
+  favorites: [],
+  toggleFavorite: () => {},
+});

@@ -1,4 +1,6 @@
 // components/CatCard.tsx
+
+// This component is used to display a cat card with an image, title, description, and action buttons.
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
