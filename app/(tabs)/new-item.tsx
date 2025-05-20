@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     marginTop: 4,
-    marginBottom: 10,
+    marginBottom: 1,
   },
   error: { color: 'red', marginBottom: 10, fontSize: 14 },
   image: { width: '100%', height: 200, marginVertical: 10, borderRadius: 8 },

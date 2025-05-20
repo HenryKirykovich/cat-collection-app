@@ -16,6 +16,7 @@ import CatCard from '../../components/CatCard';
 
 
 
+
 export default function HomeScreen() {
   const [search, setSearch] = useState('');
   const { cats, selectedCat, setSelectedCat, removeCat } = useContext(CatContext);
@@ -26,6 +27,8 @@ export default function HomeScreen() {
   );
 
   return (
+   
+   
     <ImageBackground
       source={require('../../assets/images/Cat_images/Splash_cat.jpg')}
       style={styles.background}
@@ -61,6 +64,8 @@ export default function HomeScreen() {
         />
       </View>
     </ImageBackground>
+  
+  
   );
 }
 
@@ -73,8 +78,9 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(255,255,255,0.85)',
-    padding: 20,
-    paddingBottom: 100,
+    padding: 10,
+    gap: 10
+    
   },
   header: {
     fontSize: 24,
@@ -89,5 +95,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     backgroundColor: '#fff',
+    
   },
 });

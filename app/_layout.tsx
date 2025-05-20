@@ -8,12 +8,13 @@ import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-import { CatProvider } from '../components/context/CatProvider';
 
-// added for utilazing Query:
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { CatProvider } from '../components/context/CatProvider'
 
-const queryClient = new QueryClient();
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+
+
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,19 +33,26 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-    
+  <GestureHandlerRootView style={{ flex: 1 }}>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1}}>
+
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <CatProvider>
             <Stack>
-              <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+              {/* <Stack.Screen name="(drawer)" options={{ headerShown: false }} /> */}
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
           </CatProvider>
           <StatusBar style="auto" />
         </ThemeProvider>
-     
-    </GestureHandlerRootView>
-  );
+
+      </SafeAreaView>
+    </SafeAreaProvider>
+  </GestureHandlerRootView>
+);
+  
+
+  
 }
