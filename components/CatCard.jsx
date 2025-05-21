@@ -36,6 +36,7 @@ const CatCard = ({ cat, onPress, showActions = false }) => {
           {/* Favorite icon */}
           <TouchableOpacity onPress={() => toggleFavorite(cat.id)}>
             <Ionicons
+              testID="favorite-icon"
               name={isFavorite ? 'heart' : 'heart-outline'}
               size={24}
               color={isFavorite ? 'red' : 'gray'}

@@ -1,5 +1,5 @@
 import React from  'react';
-import HomeScreen from  './index';
+import HomeScreen from  '../../app/(tabs)/index';
 import {render, fireEvent} from '@testing-library/react-native';
 
 
