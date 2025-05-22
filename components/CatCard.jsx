@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { CatContext } from './context/CatContext';
-import React from 'react';
+
 
 const CatCard = ({ cat, onPress, showActions = false }) => {
   const { favorites, toggleFavorite, removeCat, setSelectedCat } = useContext(CatContext);
