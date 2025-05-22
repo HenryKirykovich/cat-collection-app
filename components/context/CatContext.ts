@@ -1,7 +1,9 @@
 // components/context/CatContext.ts
-import { createContext } from 'react'; 
+import { createContext } from 'react';
+import React from 'react';
 
-export interface Cat { // what will be containe the all cards  low level declaring 
+export interface Cat {
+  // what will be containe the all cards  low level declaring
   id?: string;
   title: string;
   description?: string;
@@ -10,7 +12,8 @@ export interface Cat { // what will be containe the all cards  low level declari
   favorite?: boolean;
 }
 
-export interface CatContextType {   // what must be uncluded inside card  next level declaring class
+export interface CatContextType {
+  // what must be uncluded inside card  next level declaring class
   cats: Cat[];
   addCat: (cat: Omit<Cat, 'id'>) => Promise<Cat | null>; // ✅ Now returns a Promise
   removeCat: (id: string) => void;
@@ -23,7 +26,7 @@ export interface CatContextType {   // what must be uncluded inside card  next l
 
 export const CatContext = createContext<CatContextType>({
   cats: [],
-  addCat: async () => null,           // Dummy async function for default value
+  addCat: async () => null, // Dummy async function for default value
   removeCat: () => {},
   updateCat: () => {},
   selectedCat: null,
@@ -31,12 +34,3 @@ export const CatContext = createContext<CatContextType>({
   favorites: [],
   toggleFavorite: () => {},
 });
-
-
-
-
-
-
-
-
-

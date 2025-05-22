@@ -3,7 +3,7 @@
 // Implement Form Validation:
 // Ensure required fields cannot be left empty.
 // Validate data formats (e.g., text length, number formats if applicable).
-// Display meaningful error messages when validation fails. 
+// Display meaningful error messages when validation fails.
 // Title: required, minimum 3 characters.
 // Description: optional, but if provided, minimum 1 characters + add picture of the cat.
 
@@ -24,7 +24,11 @@ export default function NewItemScreen() {
   const [description, setDescription] = useState('');
   const [origin, setOrigin] = useState('');
   const [image, setImage] = useState<string | null>(null);
-  const [errors, setErrors] = useState({ title: '', description: '', origin: '' });
+  const [errors, setErrors] = useState({
+    title: '',
+    description: '',
+    origin: '',
+  });
 
   useEffect(() => {
     (async () => {
@@ -210,27 +214,24 @@ export default function NewItemScreen() {
       )}
 
       <View style={styles.buttonSpacing}>
-        <Button
-          title={selectedCat ? 'Update Cat' : 'Add Cat'}
-          onPress={handleSubmit}
-        />
+        <Button title={selectedCat ? 'Update Cat' : 'Add Cat'} onPress={handleSubmit} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  label: { fontSize: 16, marginTop: 12 },
+  buttonSpacing: { marginVertical: 6 },
+  container: { backgroundColor: '#fff', flex: 1, padding: 16 },
+  error: { color: 'red', fontSize: 14, marginBottom: 10 },
+  image: { borderRadius: 8, height: 200, marginVertical: 10, width: '100%' },
   input: {
-    borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
-    padding: 8,
-    marginTop: 4,
+    borderWidth: 1,
     marginBottom: 1,
+    marginTop: 4,
+    padding: 8,
   },
-  error: { color: 'red', marginBottom: 10, fontSize: 14 },
-  image: { width: '100%', height: 200, marginVertical: 10, borderRadius: 8 },
-  buttonSpacing: { marginVertical: 6 },
+  label: { fontSize: 16, marginTop: 12 },
 });

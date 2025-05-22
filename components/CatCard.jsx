@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { CatContext } from './context/CatContext';
+import React from 'react';
 
 const CatCard = ({ cat, onPress, showActions = false }) => {
   const { favorites, toggleFavorite, removeCat, setSelectedCat } = useContext(CatContext);
@@ -18,19 +19,13 @@ const CatCard = ({ cat, onPress, showActions = false }) => {
         <View style={styles.card}>
           {/* Circle image preview */}
           {cat.image && (
-            <Image
-              source={{ uri: cat.image }}
-              style={styles.thumbnail}
-              resizeMode="cover"
-            />
+            <Image source={{ uri: cat.image }} style={styles.thumbnail} resizeMode="cover" />
           )}
 
           {/* Title and description */}
           <View style={styles.textBlock}>
             <Text style={styles.title}>{cat.title}</Text>
-            {cat.description ? (
-              <Text style={styles.description}>{cat.description}</Text>
-            ) : null}
+            {cat.description ? <Text style={styles.description}>{cat.description}</Text> : null}
           </View>
 
           {/* Favorite icon */}
@@ -49,10 +44,7 @@ const CatCard = ({ cat, onPress, showActions = false }) => {
       {/* Action buttons: Delete & Edit */}
       {showActions && (
         <View style={styles.actionsRow}>
-          <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => removeCat(cat.id)}
-          >
+          <TouchableOpacity style={styles.iconButton} onPress={() => removeCat(cat.id)}>
             <Ionicons name="trash-outline" size={20} color="gray" />
             <Text style={styles.iconText}>Delete</Text>
           </TouchableOpacity>

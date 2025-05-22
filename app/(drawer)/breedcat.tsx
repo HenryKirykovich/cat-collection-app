@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
 
 export default function BreedCatScreen() {
   return (
@@ -13,19 +14,19 @@ export default function BreedCatScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
     justifyContent: 'center',
     padding: 20,
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 10,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  text: {
-    fontSize: 18,
-    marginBottom: 10,
   },
 });

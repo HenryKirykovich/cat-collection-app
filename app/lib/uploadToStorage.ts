@@ -1,5 +1,6 @@
 // components/context/CatContext.ts
 import { createContext } from 'react';
+import React from 'react';
 
 export interface Cat {
   id?: string;
@@ -23,7 +24,7 @@ export interface CatContextType {
 
 export const CatContext = createContext<CatContextType>({
   cats: [],
-  addCat: async () => null,           // Dummy async function for default value
+  addCat: async () => null, // Dummy async function for default value
   removeCat: () => {},
   updateCat: () => {},
   selectedCat: null,

@@ -1,4 +1,5 @@
 // app/lib/uploadCats.ts
+import React from 'react';
 import { supabase } from './supabase';
 import { Cat } from '../../components/context/CatContext';
 

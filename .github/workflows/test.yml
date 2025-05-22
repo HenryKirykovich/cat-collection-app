@@ -3,7 +3,7 @@ name: Run Scheduled Unit Tests
 
 on:
   schedule:
-    - cron: "0 5 * * *"  # everyday at 5:00 UTC
+    - cron: '0 5 * * *' # everyday at 5:00 UTC
   push:
     branches: [main]
 
@@ -25,22 +25,3 @@ jobs:
 
       - name: Run unit tests
         run: npm test
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -23,12 +23,12 @@ test('filters and displays specific cat', () => {
   const { getByPlaceholderText, queryByText } = render(
     <CatContext.Provider value={mockContext}>
       <HomeScreen />
-    </CatContext.Provider>
+    </CatContext.Provider>,
   );
 
   const searchInput = getByPlaceholderText("Search cat's breed...");
   fireEvent.changeText(searchInput, 'Main');
 
   expect(queryByText('Main Coon')).toBeTruthy();
-  expect(queryByText('Persian')).toBeNull(); // optional: pass if dont show my  Persian. Checking comptability 
+  expect(queryByText('Persian')).toBeNull(); // optional: pass if dont show my  Persian. Checking comptability
 });

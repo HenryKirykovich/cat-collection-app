@@ -25,32 +25,27 @@ export default function TabLayout() {
           },
           default: {},
         }),
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="favorite"
         options={{
           title: 'Favorites',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="heart-outline" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="heart-outline" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="new-item"
         options={{
           title: 'Add Cat',
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="add-circle" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="add-circle" size={28} color={color} />,
         }}
       />
       <Tabs.Screen

@@ -1,34 +1,21 @@
 // tabs/index
 
 import React, { useState, useContext } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  FlatList,
-  StyleSheet,
-  ImageBackground,
-} from 'react-native';
+import { View, Text, TextInput, Button, FlatList, StyleSheet, ImageBackground } from 'react-native';
 import { useRouter } from 'expo-router';
 import { CatContext } from '../../components/context/CatContext';
 import CatCard from '../../components/CatCard';
-
-
-
 
 export default function HomeScreen() {
   const [search, setSearch] = useState('');
   const { cats, selectedCat, setSelectedCat, removeCat } = useContext(CatContext);
   const router = useRouter();
 
-  const filteredItems = cats.filter(item =>
-    item.title.toLowerCase().includes(search.toLowerCase())
+  const filteredItems = cats.filter((item) =>
+    item.title.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
-   
-   
     <ImageBackground
       source={require('../../assets/images/Cat_images/Splash_cat.jpg')}
       style={styles.background}
@@ -54,7 +41,7 @@ export default function HomeScreen() {
               <CatCard
                 cat={item}
                 onPress={() => {
-                  setSelectedCat(item);               //Setting my context
+                  setSelectedCat(item); //Setting my context
                   router.push('/(tabs)/cat-details'); //setting my Navigate
                 }}
                 showActions={true} //works Only if you want delete/fav buttons here
@@ -64,23 +51,14 @@ export default function HomeScreen() {
         />
       </View>
     </ImageBackground>
-  
-  
   );
 }
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    width: '100%',
     height: '100%',
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.85)',
-    padding: 10,
-    gap: 10
-    
+    width: '100%',
   },
   header: {
     fontSize: 24,
@@ -89,12 +67,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    borderColor: '#999',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
     backgroundColor: '#fff',
-    
+    borderColor: '#999',
+    borderRadius: 8,
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: 10,
+  },
+  overlay: {
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    flex: 1,
+    gap: 10,
+    padding: 10,
   },
 });

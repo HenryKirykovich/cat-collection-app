@@ -4,13 +4,13 @@ import { render, fireEvent } from '@testing-library/react-native';
 // 1. Проверка, что текст отобразился
 test('отображается заголовок', () => {
   const { getByText } = render(<MyScreen />);
-  expect(getByText("Добро пожаловать")).toBeTruthy();
+  expect(getByText('Добро пожаловать')).toBeTruthy();
 });
 
 // 2. Проверка ввода в текстовое поле
 test('пользователь вводит имя', () => {
   const { getByPlaceholderText } = render(<MyForm />);
-  const input = getByPlaceholderText("Введите имя...");
+  const input = getByPlaceholderText('Введите имя...');
   fireEvent.changeText(input, 'Henry');
   expect(input.props.value).toBe('Henry');
 });
@@ -19,7 +19,7 @@ test('пользователь вводит имя', () => {
 test('при нажатии вызывается действие', () => {
   const mockFn = jest.fn();
   const { getByText } = render(<MyComponent onPress={mockFn} />);
-  fireEvent.press(getByText("Сохранить"));
+  fireEvent.press(getByText('Сохранить'));
   expect(mockFn).toHaveBeenCalled();
 });
 
@@ -44,7 +44,7 @@ test('список фильтруется по вводу', () => {
   const { getByPlaceholderText, queryByText } = render(
     <CatContext.Provider value={mockContext}>
       <HomeScreen />
-    </CatContext.Provider>
+    </CatContext.Provider>,
   );
 
   fireEvent.changeText(getByPlaceholderText("Search cat's breed..."), 'Main');
