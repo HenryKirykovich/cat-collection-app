@@ -1,50 +1,55 @@
-# Cat's breed App
+# Cat Collection App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a 3-page React Native application built using Expo and Supabase as part of the Bellevue College course DEV 272 - Server Side Web Development.
 
-## Get started
+## Overview
 
-1. Install dependencies
+This app allows users to:
+- View a list of cat items (name, description, origin, image)
+- Add new cats with pictures
+- Mark favorite cats
+- Filter and search by title
+- View individual cat details
 
-   ```bash
-   npm install
-   ```
+## Pages
 
-2. Start the app
+1. Home Screen – List of all cats with a search bar and filter
+2. Cat Details – Details of selected cat (origin, description, image)
+3. Add New Cat – Form to add a new cat (with validation and image upload)
 
-   ```bash
-    npx expo start
-   ```
+## Technologies Used
 
-In the output, you'll find options to open the app in a
+| Technology      | Purpose                                |
+|-----------------|----------------------------------------|
+| Expo Router     | App navigation (tabs, stack, layout)   |
+| React Native    | Building cross-platform UI             |
+| Supabase        | Database and file/image storage        |
+| React Query     | Client-side data caching and sync      |
+| TypeScript      | Type safety and scalability            |
+| Jest + Testing Library | Component and UI testing      |
+| ESLint + Prettier | Code quality and formatting         |
+| Husky           | Pre-commit hook to run lint and tests  |
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Features Implemented
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Global Context API to manage cat data
+- Supabase integration for backend services
+- Favorites toggle with persistent state
+- Real-time image upload using Expo Image Picker
+- Testing setup with Jest and RTL
+- Code validation via ESLint and Prettier
+- Git hooks with Husky for commit safety
 
-## Get a fresh project
+## What I Learned
 
-When you're ready, run:
+- Connecting a front-end app to a real backend (Supabase)
+- Structuring a React Native app using modern Expo practices
+- Implementing global state using React Context
+- Writing and running unit tests in a mobile environment
+- Using pre-commit hooks to maintain code quality
 
-```bash
-npm run reset-project
-```
+## Developer
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Henadzi Kirykovich  
+Student, Software Development – Bellevue College  
+DEV 272 – Spring 2025
