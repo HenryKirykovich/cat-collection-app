@@ -1,9 +1,14 @@
-// Shows only cats marked as favorites
-// Reuses your CatCard component
-
-// app/(tabs)/favorites.tsx
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ImageBackground,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { CatContext } from '../../components/context/CatContext';
 import CatCard from '../../components/CatCard';
 
@@ -19,18 +24,36 @@ export default function FavoritesScreen() {
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.overlay}>
-        <Text style={styles.header}>Favorite Cats</Text>
-        {favoriteCats.length === 0 ? (
-          <Text style={styles.empty}>No favorites yet. ❤️ Tap hearts on the home page!</Text>
-        ) : (
-          <FlatList
-            data={favoriteCats}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <CatCard cat={item} onPress={() => setSelectedCat(item)} />}
-          />
-        )}
-      </View>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={60}
+      >
+        <SafeAreaView style={styles.overlay}>
+          <Text style={styles.header}>Favorite Cats</Text>
+
+          {favoriteCats.length === 0 ? (
+            <Text style={styles.empty}>
+              No favorites yet. ❤️ Tap hearts on the home page!
+            </Text>
+          ) : (
+            <FlatList
+              data={favoriteCats}
+              keyExtractor={(item) => item.id?.toString() ?? ''}
+              renderItem={({ item }) => (
+                <View style={{ marginBottom: 20 }}>
+                  <CatCard
+                    cat={item}
+                    onPress={() => setSelectedCat(item)}
+                    showActions={false}
+                  />
+                </View>
+              )}
+              contentContainerStyle={{ paddingBottom: 140, flexGrow: 1 }} // ✅ как в Home
+            />
+          )}
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 }
@@ -41,21 +64,22 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-  empty: {
-    color: '#444',
-    fontSize: 16,
-    marginTop: 40,
-    textAlign: 'center',
+  overlay: {
+    backgroundColor: 'rgba(255,255,255,0.85)',
+    flex: 1,
+    padding: 20,
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 15,
     textAlign: 'center',
+    marginTop: 20,
   },
-  overlay: {
-    backgroundColor: 'rgba(255,255,255,0.85)',
-    flex: 1,
-    padding: 20,
+  empty: {
+    color: '#444',
+    fontSize: 16,
+    marginTop: 40,
+    textAlign: 'center',
   },
 });

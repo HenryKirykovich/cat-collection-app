@@ -164,7 +164,7 @@ export default function NewItemScreen() {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={80}
+        keyboardVerticalOffset={50}
       >
         <ScrollView
           contentContainerStyle={styles.container}

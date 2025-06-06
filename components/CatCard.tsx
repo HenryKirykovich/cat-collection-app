@@ -1,14 +1,28 @@
 // components/CatCard.tsx
 
-// This component is used to display a cat card with an image, title, description, and action buttons.
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { CatContext } from './context/CatContext';
+import {FC } from 'react'; // ✅ include FC here if needed
 
 
-const CatCard = ({ cat, onPress, showActions = false }) => {
+// Define Cat type (adjust if you already have it elsewhere)
+type Cat = {
+  id: string;
+  title: string;
+  description?: string;
+  image?: string;
+};
+
+type CatCardProps = {
+  cat: Cat;
+  onPress: () => void;
+  showActions?: boolean;
+};
+
+const CatCard: React.FC<CatCardProps> = ({ cat, onPress, showActions = false }) => {
   const { favorites, toggleFavorite, removeCat, setSelectedCat } = useContext(CatContext);
   const isFavorite = favorites.includes(cat.id);
   const router = useRouter();
@@ -109,13 +123,13 @@ const styles = StyleSheet.create({
   actionsRow: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    gap: 24,
     marginTop: 8,
     marginLeft: 10,
   },
   iconButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 24, // replaces unsupported "gap"
   },
   iconText: {
     marginLeft: 4,

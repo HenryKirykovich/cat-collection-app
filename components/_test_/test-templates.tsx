@@ -1,14 +1,16 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Text, TextInput, Button, View } from 'react-native';
+import { CatContextType } from '../context/CatContext';
 
-// Заглушки для компонентов, чтобы тесты не падали при импорте
-const MyScreen = () => <Text>Добро пожаловать</Text>;
+
+// Stubs for components to prevent tests from crashing during import
+const MyScreen = () => <Text>Welcome</Text>;
 const MyForm = () => {
   const [value, setValue] = React.useState('');
   return (
     <TextInput
-      placeholder="Введите имя..."
+      placeholder="Enter name..."
       value={value}
       onChangeText={setValue}
       testID="name-input"
@@ -16,38 +18,38 @@ const MyForm = () => {
   );
 };
 const MyComponent = ({ onPress }: { onPress: () => void }) => (
-  <Button title="Сохранить" onPress={onPress} />
+  <Button title="Save" onPress={onPress} />
 );
 const IconComponent = () => <View testID="main-icon" />;
 
-// Импортируйте CatContext и HomeScreen из вашего приложения
+// Import CatContext and HomeScreen from your app
 import { CatContext } from '../context/CatContext';
-const HomeScreen = () => <Text>HomeScreen</Text>; // Заглушка, замените на реальный компонент
+const HomeScreen = () => <Text>HomeScreen</Text>; // Stub — replace with the actual component
 
-// 1. Проверка, что текст отобразился
-test('отображается заголовок', () => {
+// 1. Check that the heading is displayed
+test('displays heading', () => {
   const { getByText } = render(<MyScreen />);
-  expect(getByText('Добро пожаловать')).toBeTruthy();
+  expect(getByText('Welcome')).toBeTruthy();
 });
 
-// 2. Проверка ввода в текстовое поле
-test('пользователь вводит имя', () => {
+// 2. Check user input into text field
+test('user enters name', () => {
   const { getByPlaceholderText } = render(<MyForm />);
-  const input = getByPlaceholderText('Введите имя...');
+  const input = getByPlaceholderText('Enter name...');
   fireEvent.changeText(input, 'Henry');
   expect(input.props.value).toBe('Henry');
 });
 
-// 3. Проверка нажатия кнопки и вызова коллбэка
-test('при нажатии вызывается действие', () => {
+// 3. Check button press triggers action
+test('action is triggered on button press', () => {
   const mockFn = jest.fn();
   const { getByText } = render(<MyComponent onPress={mockFn} />);
-  fireEvent.press(getByText('Сохранить'));
+  fireEvent.press(getByText('Save'));
   expect(mockFn).toHaveBeenCalled();
 });
 
-// 4. Проверка фильтрации по вводу
-test('список фильтруется по вводу', () => {
+// 4. Check list is filtered by input
+test('list is filtered by input', () => {
   const mockCats = [
     { id: '1', title: 'Main Coon' },
     { id: '2', title: 'Siamese' },
@@ -55,16 +57,17 @@ test('список фильтруется по вводу', () => {
 
   const mockContext = {
     cats: mockCats,
-    addCat: async () => null,
-    removeCat: () => {},
-    updateCat: () => {},
-    selectedCat: null,
-    setSelectedCat: () => {},
-    favorites: [],
-    toggleFavorite: () => {},
-  };
+  addCat: async () => null,
+  removeCat: () => {},
+  updateCat: () => {},
+  selectedCat: null,
+  setSelectedCat: () => {},
+  favorites: [],
+  toggleFavorite: () => {},
+    
+  }
 
-  // Заглушка для поля поиска
+  // Stub for search field screen
   const SearchScreen = () => {
     const [search, setSearch] = React.useState('');
     const filtered = mockCats.filter((cat) =>
@@ -85,7 +88,7 @@ test('список фильтруется по вводу', () => {
   };
 
   const { getByPlaceholderText, queryByText } = render(
-    <CatContext.Provider value={mockContext as any}>
+    <CatContext.Provider value={mockContext}>
       <SearchScreen />
     </CatContext.Provider>
   );
@@ -96,8 +99,8 @@ test('список фильтруется по вводу', () => {
   expect(queryByText('Siamese')).toBeNull();
 });
 
-// 5. Проверка по testID
-test('элемент найден по testID', () => {
+// 5. Check element by testID
+test('element found by testID', () => {
   const { getByTestId } = render(<IconComponent />);
   expect(getByTestId('main-icon')).toBeTruthy();
 });

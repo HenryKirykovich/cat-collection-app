@@ -2,6 +2,8 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "types": ["react", "react-native"],
+    "baseUrl": ".", // 👈 enables path mapping to root
     "paths": {
       "@/*": ["./*"]
     }
@@ -10,8 +12,11 @@
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "app/(tabs)/cat-details.js",
-    "components/CatCard.jsx"
+    "expo-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules", // 👈 avoid indexing unnecessary files
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ]
 }
