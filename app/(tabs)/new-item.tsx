@@ -1,21 +1,20 @@
-// app/(tabs)/new-item.tsx
-// Include fields such as text input for a name or description.
-// Implement Form Validation:
-// Ensure required fields cannot be left empty.
-// Validate data formats (e.g., text length, number formats if applicable).
-// Display meaningful error messages when validation fails.
-// Title: required, minimum 3 characters.
-// Description: optional, but if provided, minimum 1 characters + add picture of the cat.
-
-// app/(tabs)/new-item.tsx
-
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { CatContext } from '../../components/context/CatContext';
-import {uploadImageAsync} from '../../lib/uploadToStorage'; // ✅ ПРАВИЛЬНО
-
+import { uploadImageAsync } from '../../lib/uploadToStorage';
 
 export default function NewItemScreen() {
   const { addCat, updateCat, selectedCat, setSelectedCat } = useContext(CatContext);
@@ -161,69 +160,81 @@ export default function NewItemScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Cat Name *</Text>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={(text) => {
-          setTitle(text);
-          setErrors((prev) => ({ ...prev, title: '' }));
-        }}
-        placeholder="Enter cat name"
-      />
-      {errors.title ? <Text style={styles.error}>{errors.title}</Text> : null}
+    <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={80}
+      >
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <Text style={styles.label}>Cat Name *</Text>
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={(text) => {
+              setTitle(text);
+              setErrors((prev) => ({ ...prev, title: '' }));
+            }}
+            placeholder="Enter cat name"
+          />
+          {errors.title ? <Text style={styles.error}>{errors.title}</Text> : null}
 
-      <Text style={styles.label}>Description *</Text>
-      <TextInput
-        style={styles.input}
-        value={description}
-        onChangeText={(text) => {
-          setDescription(text);
-          setErrors((prev) => ({ ...prev, description: '' }));
-        }}
-        placeholder="Describe the cat"
-      />
-      {errors.description ? <Text style={styles.error}>{errors.description}</Text> : null}
+          <Text style={styles.label}>Description *</Text>
+          <TextInput
+            style={styles.input}
+            value={description}
+            onChangeText={(text) => {
+              setDescription(text);
+              setErrors((prev) => ({ ...prev, description: '' }));
+            }}
+            placeholder="Describe the cat"
+          />
+          {errors.description ? <Text style={styles.error}>{errors.description}</Text> : null}
 
-      <Text style={styles.label}>Origin *</Text>
-      <TextInput
-        style={styles.input}
-        value={origin}
-        onChangeText={(text) => {
-          setOrigin(text);
-          setErrors((prev) => ({ ...prev, origin: '' }));
-        }}
-        placeholder="Enter origin (e.g., Thailand)"
-      />
-      {errors.origin ? <Text style={styles.error}>{errors.origin}</Text> : null}
+          <Text style={styles.label}>Origin *</Text>
+          <TextInput
+            style={styles.input}
+            value={origin}
+            onChangeText={(text) => {
+              setOrigin(text);
+              setErrors((prev) => ({ ...prev, origin: '' }));
+            }}
+            placeholder="Enter origin (e.g., Thailand)"
+          />
+          {errors.origin ? <Text style={styles.error}>{errors.origin}</Text> : null}
 
-      <View style={styles.buttonSpacing}>
-        <Button title="Take a Photo" onPress={takePhoto} />
-      </View>
-      <View style={styles.buttonSpacing}>
-        <Button title="Pick an Image" onPress={pickImage} />
-      </View>
-
-      {image && (
-        <>
-          <Image source={{ uri: image }} style={styles.image} />
           <View style={styles.buttonSpacing}>
-            <Button title="Remove Image" onPress={removeImage} color="#d9534f" />
+            <Button title="Take a Photo" onPress={takePhoto} />
           </View>
-        </>
-      )}
+          <View style={styles.buttonSpacing}>
+            <Button title="Pick an Image" onPress={pickImage} />
+          </View>
 
-      <View style={styles.buttonSpacing}>
-        <Button title={selectedCat ? 'Update Cat' : 'Add Cat'} onPress={handleSubmit} />
-      </View>
+          {image && (
+            <>
+              <Image source={{ uri: image }} style={styles.image} />
+              <View style={styles.buttonSpacing}>
+                <Button title="Remove Image" onPress={removeImage} color="#d9534f" />
+              </View>
+            </>
+          )}
+
+          <View style={styles.buttonSpacing}>
+            <Button title={selectedCat ? 'Update Cat' : 'Add Cat'} onPress={handleSubmit} />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   buttonSpacing: { marginVertical: 6 },
-  container: { backgroundColor: '#fff', flex: 1, padding: 16 },
+  container: { backgroundColor: '#fff', flexGrow: 1, padding: 16 },
   error: { color: 'red', fontSize: 14, marginBottom: 10 },
   image: { borderRadius: 8, height: 200, marginVertical: 10, width: '100%' },
   input: {
