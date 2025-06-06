@@ -14,7 +14,8 @@ import { View, Text, TextInput, Button, StyleSheet, Alert, Image } from 'react-n
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { CatContext } from '../../components/context/CatContext';
-import { uploadImageAsync } from '../lib/uploadToStorage';
+import {uploadImageAsync} from '../../lib/uploadToStorage'; // ✅ ПРАВИЛЬНО
+
 
 export default function NewItemScreen() {
   const { addCat, updateCat, selectedCat, setSelectedCat } = useContext(CatContext);

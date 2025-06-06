@@ -1,7 +1,7 @@
 // Simplified CatProvider.tsx (no React Query)
 import React, { useState, useEffect, ReactNode } from 'react';
 import { CatContext, Cat } from './CatContext';
-import { supabase } from '../../app/lib/supabase';
+import { supabase } from '../../lib/supabase';
 
 type CatProviderProps = { children: ReactNode };
 

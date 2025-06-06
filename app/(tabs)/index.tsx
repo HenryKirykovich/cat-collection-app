@@ -22,7 +22,7 @@ export default function HomeScreen() {
       resizeMode="cover"
     >
       <View style={styles.overlay}>
-        <Text style={styles.header}>Cat's breed</Text>
+        <Text style={styles.header}>Cat&#39;s breed</Text>
 
         <TextInput
           style={styles.input}
@@ -35,7 +35,7 @@ export default function HomeScreen() {
 
         <FlatList
           data={filteredItems}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => item.id ?? index.toString()}
           renderItem={({ item }) => (
             <View style={{ marginBottom: 20 }}>
               <CatCard

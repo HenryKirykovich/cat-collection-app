@@ -1,7 +1,7 @@
 // app/lib/uploadCats.ts
 import React from 'react';
 import { supabase } from './supabase';
-import { Cat } from '../../components/context/CatContext';
+import { Cat } from '../components/context/CatContext';
 
 // Insert new cat
 export async function insertCat(cat: Omit<Cat, 'id'>) {
